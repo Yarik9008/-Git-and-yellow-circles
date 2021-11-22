@@ -1,15 +1,41 @@
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
-from PyQt5.QtGui import QPainter, QPen, QBrush, QColor
-from PyQt5.QtCore import Qt
-from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtGui import QPainter, QColor
 from random import randint
 
-class MyWidget(QMainWindow):
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(329, 436)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(10, 350, 301, 41))
+        self.pushButton.setObjectName("pushButton")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 329, 23))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.pushButton.setText(_translate("MainWindow", "Нарисовать круг "))
+
+
+class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)  # Загружаем дизайн
+        self.setupUi(self) # Загружаем дизайн
         self.pushButton.clicked.connect(self.paint)
         self.do_paint = False
 
@@ -25,9 +51,12 @@ class MyWidget(QMainWindow):
         self.repaint()            
 
     def draw_cicle(self,qp):
-        r = randint(10,200)
-        qp.setBrush(QColor(255, 255, 0))
-        qp.drawEllipse(120, 120, r, r)
+        rad = randint(10,200)
+        r = randint(0,255)
+        g = randint(0,255)
+        b = randint(0,255)
+        qp.setBrush(QColor(r, g, b))
+        qp.drawEllipse(120, 120, rad, rad)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
